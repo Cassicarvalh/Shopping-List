@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #205888;
+        }
+        h1 {
+            color: #ffffff;
+        }
+        .list {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shopping List</h1>
+    <button onclick="startShoppingList()">Iniciar</button>
+    <div class="list" id="shoppingListOutput"></div>
+
+    <script>
+        function startShoppingList() {
+            let shoppingList = {
+                Frutas: [],
+                Laticínios: [],
+                Congelados: [],
+                Doces: [],
+                Outros: []
+            };
+
+            while (true) {
+                let addMore = prompt("Deseja adicionar uma comida à sua lista de compras? Responda 'sim' ou 'não'.").toLowerCase();
+
+                if (addMore === 'não') {
+                    break;
+                } else if (addMore === 'sim') {
+                    let food = prompt("Qual comida você deseja adicionar?");
+                    let category = prompt(
+                        "Em qual categoria essa comida se encaixa? Escolha entre: Frutas, Laticínios, Congelados, Doces ou Outros."
+                    ).toLowerCase();
+
+                    if (shoppingList[capitalize(category)] !== undefined) {
+                        shoppingList[capitalize(category)].push(food);
+                    } else {
+                        alert("Categoria inválida! A comida será adicionada na categoria 'Outros'.");
+                        shoppingList.Outros.push(food);
+                    }
+                } else {
+                    alert("Resposta inválida. Por favor, responda 'sim' ou 'não'.");
+                }
+            }
+
+            displayShoppingList(shoppingList);
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function displayShoppingList(list) {
+            const outputDiv = document.getElementById("shoppingListOutput");
+            outputDiv.innerHTML = "<h2>Lista de Compras:</h2>";
+            let content = "<ul>";
+
+            for (let category in list) {
+                if (list[category].length > 0) {
+                    content += `<li><strong>${category}:</strong> ${list[category].join(", ")}</li>`;
+                } else {
+                    content += `<li><strong>${category}:</strong> (vazio)</li>`;
+                }
+            }
+
+            content += "</ul>";
+            outputDiv.innerHTML += content;
+        }
+    </script>
+</body>
+</html>
